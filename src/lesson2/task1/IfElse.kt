@@ -5,6 +5,8 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
+import kotlin.math.abs
+
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
@@ -68,15 +70,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    return when {
+fun ageDescription(age: Int): String = when {
         age % 100 in 11..19 -> "$age лет"
         age % 10 in 2..4 -> "$age года"
         age % 10 == 1 -> "$age год"
         else -> "$age лет"
     }
 
-}
 
 
 
@@ -100,8 +100,8 @@ fun ageDescription(age: Int): String {
         val s3 = t3 * v3
         val s = (s1 + s2 + s3) / 2.0
         if (s <= s1) return s / v1
-        if (s <= s1 + s2) return (s - s1) / v2 + t1
-        if (s <= s1 + s2 + s3) return (s - s1 - s2) / v3 + t1 + t2 else return (s)
+        else if (s <= s1 + s2) return (s - s1) / v2 + t1
+        else if  (s <= s1 + s2 + s3) return (s - s1 - s2) / v3 + t1 + t2 else return (s)
 
      }
 
@@ -149,7 +149,7 @@ fun rookOrBishopThreatens(
     bishopX: Int, bishopY: Int
 ): Int {
     val d1 = (kingX == rookX) || (kingY == rookY)
-    val d2 = kotlin.math.abs(kingX - bishopX) == kotlin.math.abs(kingY - bishopY)
+    val d2 = abs(kingX - bishopX) == abs(kingY - bishopY)
     return when {
         (d1 && d2) -> 3
         d1 -> 1
