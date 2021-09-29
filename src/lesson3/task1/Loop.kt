@@ -76,7 +76,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var k = 0
-    var j = n
+    var j = kotlin.math.abs(n)
     while (j > 0) {
         k += 1
         j = j / 10

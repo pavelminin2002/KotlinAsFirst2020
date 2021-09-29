@@ -3,7 +3,9 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.max
 import kotlin.math.abs
+import kotlin.math.min
 
 
 /**
@@ -31,11 +33,8 @@ fun isNumberHappy(number: Int): Boolean =
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
-    if ((x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2))) return true
-    else return false
-
-}
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    ((x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2)))
 
 
 /**
@@ -48,7 +47,9 @@ fun daysInMonth(month: Int, year: Int): Int {
     if ((month == 2) && (year % 4 != 0)) return 28
     if ((month == 2) && ((year % 100 == 0) && (year % 400 != 0))) return 28
     if ((year % 4 == 0) && (month == 2)) return 29
-    if ((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) return 31
+    if ((month == 1) || (month == 3) || (month == 5) || (month == 7)
+        || (month == 8) || (month == 10) || (month == 12)
+    ) return 31
     if ((month == 4) || (month == 6) || (month == 9) || (month == 11)) return 30
     else return 0
 
@@ -77,13 +78,10 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun maxOf(a: Int, b: Int, c: Int): Int {
-    if (kotlin.math.max(a,b) == a) return kotlin.math.max(a,c) else return kotlin.math.max(b,c)
 
-}
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = when {
-    maxOf(a,b,c) == a -> if ((kotlin.math.min(b,c) <= kotlin.math.min(r,s)) && (kotlin.math.max(b,c) <= kotlin.math.max(r,s))) true else false
-    maxOf(a,b,c) == b -> if ((kotlin.math.min(a,c) <= kotlin.math.min(r,s)) && (kotlin.math.max(a,c) <= kotlin.math.max(r,s))) true else false
-    maxOf(a,b,c) == c -> if ((kotlin.math.min(a,b) <= kotlin.math.min(r,s)) && (kotlin.math.max(b,a) <= kotlin.math.max(r,s))) true else false
-    else -> if ((a <= r) && (a <= s)) true else false
+    maxOf(a, b, c) == a -> ((min(b, c) <= min(r, s)) && (max(b, c) <= max(r, s)))
+    maxOf(a, b, c) == b -> ((min(a, c) <= min(r, s)) && (max(a, c) <= max(r, s)))
+    maxOf(a, b, c) == c -> ((min(a, b) <= min(r, s)) && (max(b, a) <= max(r, s)))
+    else -> ((a <= r) && (a <= s))
 }

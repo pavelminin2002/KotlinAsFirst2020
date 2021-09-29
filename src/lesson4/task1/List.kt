@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -122,7 +123,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var abs = 0.0
-    for (i in 0..(v.size-1)) {
+    for (i in 0..(v.size - 1)) {
         abs += v[i] * v[i]
     }
     return sqrt(abs)
@@ -135,7 +136,7 @@ fun abs(v: List<Double>): Double {
  */
 fun mean(list: List<Double>): Double {
     if (list.isEmpty() == true) return 0.0
-    else return (list.sum()/list.size)
+    else return (list.sum() / list.size)
 }
 
 /**
@@ -148,9 +149,8 @@ fun mean(list: List<Double>): Double {
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     if (list.isEmpty() == true) return list
-    for (i in 0..(list.size-1)) {
-        list[i] = list[i] - mean(list)
-    }
+    val mean = mean(list)
+    for (i in 0 until list.size) list[i] -= mean
     return list
 }
 
@@ -161,7 +161,11 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var s = 0
+    for (i in 0 until b.size) s += a[i] * b[i]
+    return s
+}
 
 /**
  * Средняя (3 балла)
@@ -171,7 +175,15 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var s = 0
+    var d = 1
+    for (i in 0 until p.size) {
+        s += p[i] * d
+        d *= x
+    }
+    return s
+}
 
 /**
  * Средняя (3 балла)
@@ -192,7 +204,19 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    var i = 2
+    var nn = n
+    val res = mutableListOf<Int>()
+    while (nn > 1) {
+        while (nn % i == 0) {
+            res.add(i)
+            nn /= i
+        }
+        i += 1
+    }
+    return res
+}
 
 /**
  * Сложная (4 балла)
@@ -201,7 +225,8 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя (3 балла)
@@ -210,7 +235,15 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var nn = n
+    var res = mutableListOf<Int>()
+    while (nn > 0) {
+        res.add(0, nn % base)
+        nn /= base
+    }
+    return res
+}
 
 /**
  * Сложная (4 балла)
@@ -223,7 +256,18 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var k: MutableList<Int> = convert(n, base) as MutableList<Int>
+    val alf = "abcdefghijklmnopqrstuvwxyz"
+    var m = k.joinToString(separator = "")
+    for (i in 0 until m.length) {
+        if (m[i].toInt() >= 10) {
+            m[i] = alf[m[i].toInt() - 10]
+        }
+    }
+    return m
+
+}
 
 /**
  * Средняя (3 балла)
