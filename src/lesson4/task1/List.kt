@@ -123,7 +123,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var abs = 0.0
-    for (i in 0..(v.size - 1)) {
+    for (i in 0 until v.size) {
         abs += v[i] * v[i]
     }
     return sqrt(abs)
@@ -148,7 +148,6 @@ fun mean(list: List<Double>): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    if (list.isEmpty() == true) return list
     val mean = mean(list)
     for (i in 0 until list.size) list[i] -= mean
     return list
@@ -257,17 +256,17 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    var k: MutableList<Int> = convert(n, base) as MutableList<Int>
+    val k: List<Int> = convert(n, base)
     val alf = "abcdefghijklmnopqrstuvwxyz"
-    var m = k.joinToString(separator = "")
-    for (i in 0 until m.length) {
-        if (m[i].toInt() >= 10) {
-            m[i] = alf[m[i].toInt() - 10]
-        }
+    var m: String = ""
+    for (i in 0 until k.size) {
+        if (k[i] < 10) {
+            m += k[i].toString()
+        } else m += alf[k[i] - 10]
     }
     return m
-
 }
+
 
 /**
  * Средняя (3 балла)
@@ -276,7 +275,15 @@ fun convertToString(n: Int, base: Int): String {
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var k = 0
+    var n = 1
+    for (i in digits.size - 1 downTo 0) {
+        k += digits[i] * n
+        n = n * base
+    }
+    return k
+}
 
 /**
  * Сложная (4 балла)
@@ -290,7 +297,15 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var k = mutableListOf<Int>()
+    var alf = "abcdefghijklmnopqrstuvwxyz"
+    for (char in str) {
+        if (char in alf) k.add(char - 'a' + 10)
+        else k.add(char - '0')
+    }
+    return decimal(k, base)
+}
 
 /**
  * Сложная (5 баллов)
@@ -300,7 +315,46 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var m = mutableListOf<Int>()
+    var k = n
+    var x = ""
+    if (n >= 1000) {
+        x += "M".repeat(k / 1000)
+    } else k = n
+    k %= 1000
+    if (k / 100 == 9) x += "CM"
+    else if (k / 100 == 5) x += "D"
+    else if (k / 100 == 4) x += "CD"
+    else if ((k < 500) && (k > 100) && (k / 100 != 4)) {
+        x += "C".repeat(k / 100)
+    } else if ((k > 500) && (k < 1000) && (k / 100 != 9)) {
+        x += "D" + "C".repeat((k - 500)/ 100)
+    } else k = n
+    k %= 100
+    if (k / 10 == 10) x += "C"
+    else if (k / 10 == 9) x += "XC"
+    else if (k / 10 == 4) x += "XL"
+    else if  (k / 10 == 5) x += "L"
+    else if ((k < 50) && (k > 10) && (k / 10 != 4)) {
+        x += "X".repeat(k / 10)
+    } else if ((k > 50) && (k < 100) && (k / 10 != 9)) {
+        x += "L" + "X".repeat((k - 50)/ 10)
+    } else k = n
+    k %= 10
+    if (k/10 == 1) x += "X"
+    if (k == 9) x += "IX"
+    if (k == 4) x += "IV"
+    if (k == 1) x += "I"
+    if ((k < 5) && (k > 1) && (k != 4)) {
+        x += "I".repeat(k)
+    } else if ((k > 5) && (k < 10) && (k != 9)) {
+        x += "V"+"I".repeat(k -5)
+    } else k = n
+    return x
+
+}
+
 
 /**
  * Очень сложная (7 баллов)
