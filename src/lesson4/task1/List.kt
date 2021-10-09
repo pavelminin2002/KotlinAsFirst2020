@@ -135,8 +135,8 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    if (list.isEmpty() == true) return 0.0
-    else return (list.sum() / list.size)
+    return if (list.isEmpty()) return 0.0
+    else (list.sum() / list.size)
 }
 
 /**
@@ -237,6 +237,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): List<Int> {
     var nn = n
     var res = mutableListOf<Int>()
+    if (n == 0) res.add(n)
     while (nn > 0) {
         res.add(0, nn % base)
         nn /= base
@@ -339,17 +340,17 @@ fun roman(n: Int): String {
     else if ((k < 50) && (k > 10) && (k / 10 != 4)) {
         x += "X".repeat(k / 10)
     } else if ((k > 50) && (k < 100) && (k / 10 != 9)) {
-        x += "L" + "X".repeat((k - 50)/ 10)
+        x += "L" + "X".repeat((k - 50) / 10)
     } else k = n
     k %= 10
     if (k/10 == 1) x += "X"
     if (k == 9) x += "IX"
     if (k == 4) x += "IV"
-    if (k == 1) x += "I"
-    if ((k < 5) && (k > 1) && (k != 4)) {
+    if (k == 5) x += "V"
+    if ((k < 5) && (k >= 1) && (k != 4)) {
         x += "I".repeat(k)
     } else if ((k > 5) && (k < 10) && (k != 9)) {
-        x += "V"+"I".repeat(k -5)
+        x += "V" + "I".repeat(k - 5)
     } else k = n
     return x
 

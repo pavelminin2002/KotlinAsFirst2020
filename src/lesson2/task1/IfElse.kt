@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 import kotlin.math.abs
 
@@ -94,10 +95,9 @@ fun timeForHalfWay(
     val s2 = t2 * v2
     val s3 = t3 * v3
     val s = (s1 + s2 + s3) / 2.0
-    if (s <= s1) return s / v1
-    else if (s <= s1 + s2) return (s - s1) / v2 + t1
-    else if (s <= s1 + s2 + s3) return (s - s1 - s2) / v3 + t1 + t2 else return (s)
-
+    return if (s <= s1) s / v1
+    else if (s <= s1 + s2) (s - s1) / v2 + t1
+    else if (s <= s1 + s2 + s3) (s - s1 - s2) / v3 + t1 + t2 else (s)
 }
 
 
@@ -167,15 +167,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val g = 0
     if ((a + b > c) && (a + c > b) && (c + b > a)) {
         if ((a * a + b * b == c * c) || (a * a == b * b + c * c) || (b * b == a * a + c * c))
-            return (1)
+            return 1
         val cosA = (b * b + c * c - a * a) / (2.0 * b * c)
         val cosB = (c * c + a * a - b * b) / (2.0 * a * c)
         val cosC = (b * b - c * c + a * a) / (2.0 * b * a)
         if ((cosA < 0) || (cosB < 0) || (cosC < 0)) return 2
         else return g
-
-
-    } else return (-1)
+    } else return -1
 }
 
 /**
@@ -190,7 +188,6 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     if (b < c) return (-1)
     if (d < a) return (-1)
     if (b == c) return (0)
-    else return kotlin.math.min(b, d) - max(a, c)
-
+    else return min(b, d) - max(a, c)
 }
 

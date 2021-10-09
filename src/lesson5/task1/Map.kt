@@ -125,7 +125,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((k, v) in b) {
+        if (v == a[k]) a.remove(k)
+    }
 }
 
 /**
@@ -135,7 +137,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().intersect(b.toSet()).toList()
+
 
 /**
  * Средняя (3 балла)
@@ -154,7 +157,14 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val m = mapA.toMutableMap()
+    for ((k, v) in mapB) {
+        if ((k in m) && (m[k] != v)) m[k] += ", $v"
+        else m += k to v
+    }
+    return m
+}
 
 /**
  * Средняя (4 балла)
@@ -167,6 +177,20 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+/**
+    var m: Map<String, Double>
+    for ((k,v) in stockPrices){
+        if (k in m) m += k to v
+        else m[k] += ", $v"
+
+
+
+
+
+
+    }
+ */
+
 
 /**
  * Средняя (4 балла)

@@ -2,9 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.roundToInt
+import kotlin.math.abs
 import kotlin.math.sqrt
-import kotlin.math.pow
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -19,7 +18,7 @@ import kotlin.math.pow
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -76,15 +75,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var k = 0
-    var j = kotlin.math.abs(n)
+    var j = abs(n)
     while (j > 0) {
         k += 1
-        j = j / 10
-
-
+        j /= 10
     }
-    if (k > 0) return k
-    else return 1
+    return if (k > 0) k
+    else 1
 }
 
 /**
@@ -97,7 +94,7 @@ fun fib(n: Int): Int {
     var p = 1
     var c = 1
     var t = 0
-    for (i in 1..(n-2)) {
+    for (i in 1..(n - 2)) {
         t = p + c
         p = c
         c = t
@@ -128,7 +125,7 @@ fun minDivisor(n: Int): Int {
 fun maxDivisor(n: Int): Int {
     var d = 0
     var max = 0
-    for (m in 1..(n-1)) {
+    for (m in 1..(n - 1)) {
         if (n % m == 0) d = m
         if (d > max) max = d
     }
@@ -156,9 +153,8 @@ fun collatzSteps(x: Int): Int {
     var j = x
     while (j != 1) {
         k += 1
-        if (j % 2 == 0) j = j /2
+        if (j % 2 == 0) j /= 2
         else j = 3 * j + 1
-
     }
     return k
 }
@@ -175,17 +171,12 @@ fun lcm(m: Int, n: Int): Int {
     var k = m
     var l = n
     while ((k != 0) && (l != 0)) {
-        if (k > l) k = k % l
-        else l = l % k
-
-
-
-
+        if (k > l) k %= l
+        else l %= k
     }
     nod = k + l
     nok = m * n / nod
     return nok
-
 }
 
 /**
@@ -196,14 +187,15 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var k = true
-    for (i in 2..n) {
-        if ((m % i == 0) && (n % i == 0)) k = false
-
+    var nod = 0
+    var k = m
+    var l = n
+    while ((k != 0) && (l != 0)) {
+        if (k > l) k %= l
+        else l %= k
     }
-    if (k == true) return true
-    else return false
-
+    nod = k + l
+    return nod == 1
 }
 
 /**
@@ -218,10 +210,10 @@ fun revert(n: Int): Int {
     var k = 0
     var j = 0
     while (x > 0) {
-        k = k * 10
+        k *= 10
         j = x % 10
-        k = k + j
-        x = x /10
+        k += j
+        x /= 10
     }
     return k
 }
@@ -294,20 +286,19 @@ fun squareSequenceDigit(n: Int): Int {
     var k = 1
     var p = 0
     var j = 0
-    for (i in 1..(n +1)) {
+    for (i in 1..(n + 1)) {
         p = digitNumber(i * i)
         j += p
         if (j >= n) {
             k = i * i
             break
         }
-
     }
     if (j == n) return k % 10
     else {
         while (j != n) {
-            k = k / 10
-            j = j - 1
+            k /= 10
+            j -= 1
         }
         return k % 10
     }
@@ -326,21 +317,20 @@ fun fibSequenceDigit(n: Int): Int {
     var k = 1
     var p = 0
     var j = 0
-    for (i in 1..(n +1)) {
+    for (i in 1..(n + 1)) {
         p = digitNumber(fib(i))
         j += p
         if (j >= n) {
             k = fib(i)
             break
         }
-
     }
-    if (j == n) return k % 10
+    return if (j == n) k % 10
     else {
         while (j != n) {
-            k = k / 10
-            j = j - 1
+            k /= 10
+            j -= 1
         }
-        return k % 10
+        k % 10
     }
 }
