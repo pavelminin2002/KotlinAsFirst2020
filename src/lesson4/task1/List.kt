@@ -99,7 +99,7 @@ fun squares(vararg array: Int) = squares(array.toList()).toTypedArray()
  * "А роза упала на лапу Азора" является палиндромом.
  */
 fun isPalindrome(str: String): Boolean {
-    val lowerCase = str.toLowerCase().filter { it != ' ' }
+    val lowerCase = str.lowercase().filter { it != ' ' }
     for (i in 0..lowerCase.length / 2) {
         if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
     }
@@ -335,28 +335,25 @@ fun russian(n: Int): String {
         "четыреста", "пятьсот", "шестьсот",
         "семьсот", "восемьсот", "девятьсот"
     )
-    val numbers = listOf(n / 1000, n % 1000)
+    val number = listOf(n / 1000, n % 1000)
     val result = mutableListOf<String>()
-    for (i in numbers.indices) {
-        if (numbers[i] == 0) continue
-        val residual_100 = numbers[i] % 100
-        val wholePart_100 = numbers[i] / 100
-        if (wholePart_100 in 1..9) result.add(hundreds100to900[wholePart_100 - 1])
-        if (residual_100 in 11..19) {
-            result.add(number11to19[residual_100 - 11])
-        } else if (residual_100 / 10 in 1..9) result.add(dozens10to90[residual_100 / 10 - 1])
-        if (i == 0) {
-            if ((residual_100 !in 11..19) && (numbers[i] % 10 in 1..9)) {
-                when (numbers[i] % 10) {
+    for (i in number.indices) {
+        if (number[i] == 0) continue
+        if (number[i] / 100 in 1..9) result.add(hundreds100to900[number[i] / 100 - 1])
+        if (number[i] % 100 in 11..19) {
+            result.add(number11to19[number[i] % 100 - 11])
+        } else if (number[i] % 100 / 10 in 1..9) result.add(dozens10to90[number[i] % 100 / 10 - 1])
+        if (i == 0 && number[i] != 0) {
+            if ((number[i] % 100 !in 11..19) && (number[i] % 10 in 1..9)) {
+                when (number[i] % 10) {
                     1 -> result.add("одна тысяча")
                     2 -> result.add("две тысячи")
                     3 -> result.add("три тысячи")
                     4 -> result.add("четыре тысячи")
-                    else -> result.add("${number1to9[numbers[i] % 10 - 1]} тысяч")
+                    else -> result.add("${number1to9[number[i] % 10 - 1]} тысяч")
                 }
             } else result.add("тысяч")
-        } else if ((residual_100 !in 11..19) && (numbers[i] % 10 in 1..9)) result.add(number1to9[numbers[i] % 10 - 1])
+        } else if ((number[i] % 100 !in 11..19) && (number[i] % 10 in 1..9)) result.add(number1to9[number[i] % 10 - 1])
     }
-
     return result.joinToString(separator = " ")
 }
