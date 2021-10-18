@@ -24,7 +24,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean =
-    ((number / 1000 + (number / 100) % 10) == ((number / 10) % 10 + number % 10))
+    number / 1000 + (number / 100) % 10 == (number / 10) % 10 + number % 10
 
 
 /**
@@ -35,7 +35,7 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    ((x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2)))
+    (x1 == x2 || y1 == y2) || abs(x1 - x2) == abs(y1 - y2)
 
 
 /**

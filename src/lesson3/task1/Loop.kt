@@ -159,6 +159,17 @@ fun collatzSteps(x: Int): Int {
     return k
 }
 
+fun nod(m: Int, n: Int): Int {
+    var no = 0
+    var k = m
+    var l = n
+    while (k != 0 && l != 0) {
+        if (k > l) k %= l
+        else l %= k
+    }
+    no = k + l
+    return no
+}
 /**
  * Средняя (3 балла)
  *
@@ -166,15 +177,8 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var nod = 0
+    var nod = nod(m,n)
     var nok = 0
-    var k = m
-    var l = n
-    while ((k != 0) && (l != 0)) {
-        if (k > l) k %= l
-        else l %= k
-    }
-    nod = k + l
     nok = m * n / nod
     return nok
 }
@@ -187,14 +191,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var nod = 0
-    var k = m
-    var l = n
-    while ((k != 0) && (l != 0)) {
-        if (k > l) k %= l
-        else l %= k
-    }
-    nod = k + l
+    var nod = nod(m,n)
     return nod == 1
 }
 
@@ -294,13 +291,13 @@ fun squareSequenceDigit(n: Int): Int {
             break
         }
     }
-    if (j == n) return k % 10
+    return if (j == n) k % 10
     else {
         while (j != n) {
             k /= 10
             j -= 1
         }
-        return k % 10
+        k % 10
     }
 }
 

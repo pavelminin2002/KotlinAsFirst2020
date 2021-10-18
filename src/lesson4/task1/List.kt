@@ -135,7 +135,7 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    return if (list.isEmpty()) return 0.0
+    return if (list.isEmpty()) 0.0
     else (list.sum() / list.size)
 }
 
@@ -239,9 +239,10 @@ fun convert(n: Int, base: Int): List<Int> {
     var res = mutableListOf<Int>()
     if (n == 0) res.add(n)
     while (nn > 0) {
-        res.add(0, nn % base)
+        res.add( nn % base)
         nn /= base
     }
+    res.reverse()
     return res
 }
 
@@ -257,14 +258,9 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val k: List<Int> = convert(n, base)
+    val k = convert(n, base)
     val alf = "abcdefghijklmnopqrstuvwxyz"
-    var m: String = ""
-    for (i in 0 until k.size) {
-        if (k[i] < 10) {
-            m += k[i].toString()
-        } else m += alf[k[i] - 10]
-    }
+    var m = buildString {for (i in 0 until k.size) if (k[i] < 10) append(k[i].toString()) else append(alf[k[i] - 10])}
     return m
 }
 
