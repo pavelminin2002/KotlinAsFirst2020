@@ -176,12 +176,7 @@ fun nod(m: Int, n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var nod = nod(m,n)
-    var nok = 0
-    nok = m * n / nod
-    return nok
-}
+fun lcm(m: Int, n: Int): Int = m * n / nod(m,n)
 
 /**
  * Средняя (3 балла)
@@ -191,7 +186,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var nod = nod(m,n)
+    val nod = nod(m,n)
     return nod == 1
 }
 

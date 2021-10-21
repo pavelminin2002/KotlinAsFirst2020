@@ -2,6 +2,10 @@
 
 package lesson5.task1
 
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -177,20 +181,6 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
-/**
-    var m: Map<String, Double>
-    for ((k,v) in stockPrices){
-        if (k in m) m += k to v
-        else m[k] += ", $v"
-
-
-
-
-
-
-    }
- */
-
 
 /**
  * Средняя (4 балла)
@@ -207,7 +197,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var reskind: String? = null
+    var min: Double? = null
+    for ((a, b) in stuff) {
+        if ((b.first == kind) && (min == null || min > b.second)) {
+            reskind = a
+            min = b.second
+        }
+    }
+    return reskind
+}
 
 /**
  * Средняя (3 балла)
@@ -232,7 +232,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val k = mutableMapOf<String, Int>()
+    for (i in list) {
+        if (i in k) k[i] = k[i]!! + 1
+        else k[i] = 1
+    }
+    return k.filter { it.value > 1 }
+}
 
 /**
  * Средняя (3 балла)
@@ -247,6 +254,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean = TODO()
+
 
 /**
  * Сложная (5 баллов)
@@ -301,7 +309,18 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isNotEmpty()) {
+        val m = list.map { abs(it - number) }
+        for (i in list.indices) {
+            if (m[i] in list && i != list.indexOf(m[i])) return Pair(
+                min(i, list.indexOf(m[i])),
+                max(i, list.indexOf(m[i]))
+            )
+        }
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)

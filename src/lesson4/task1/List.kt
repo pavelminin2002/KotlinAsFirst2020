@@ -134,10 +134,7 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isEmpty()) 0.0
-    else (list.sum() / list.size)
-}
+fun mean(list: List<Double>): Double = if (list.isEmpty()) 0.0 else (list.sum() / list.size)
 
 /**
  * Средняя (3 балла)
@@ -260,7 +257,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val k = convert(n, base)
     val alf = "abcdefghijklmnopqrstuvwxyz"
-    var m = buildString {for (i in 0 until k.size) if (k[i] < 10) append(k[i].toString()) else append(alf[k[i] - 10])}
+    var m = buildString {for (i in k.indices) if (k[i] < 10) append(k[i].toString()) else append(alf[k[i] - 10])}
     return m
 }
 
@@ -332,14 +329,15 @@ fun roman(n: Int): String {
     if (k / 10 == 10) x += "C"
     else if (k / 10 == 9) x += "XC"
     else if (k / 10 == 4) x += "XL"
-    else if  (k / 10 == 5) x += "L"
+    else if (k / 10 == 5) x += "L"
+    if (k / 10 == 1) x += "X"
     else if ((k < 50) && (k > 10) && (k / 10 != 4)) {
         x += "X".repeat(k / 10)
     } else if ((k > 50) && (k < 100) && (k / 10 != 9)) {
         x += "L" + "X".repeat((k - 50) / 10)
     } else k = n
     k %= 10
-    if (k/10 == 1) x += "X"
+    if (k / 10 == 1) x += "X"
     if (k == 9) x += "IX"
     if (k == 4) x += "IV"
     if (k == 5) x += "V"
