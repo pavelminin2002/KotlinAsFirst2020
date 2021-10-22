@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +76,30 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val p = str.split(" ")
+    if (p.size != 3) return ""
+    val months = listOf<String>(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    val month = if (months.indexOf(p[1]) != -1) months.indexOf(p[1]) + 1 else return ""
+    val day = p[0].toIntOrNull()
+    val year = p[2].toIntOrNull()
+    if ((day == null) || (year == null) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
+    return String.format("%02d.%02d.%02d", day, month, year)
+
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +111,34 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val p = digital.split(".")
+    if (p.size != 3) return ""
+    val months = listOf<String>(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    var monthstr = ""
+    var month = p[1].toIntOrNull()
+    if (month != null) {
+        if (month in 1..12) monthstr = months[month - 1]
+        else return ""
+    } else return ""
+    val day = p[0].toIntOrNull()
+    val year = p[2].toIntOrNull()
+    if ((day == null) || (year == null) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
+    return "$day $monthstr $year"
+}
 
 /**
  * Средняя (4 балла)
@@ -110,11 +162,23 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Результаты спортсмена на соревнованиях в прыжках в длину представлены строкой вида
  * "706 - % 717 % 703".
  * В строке могут присутствовать числа, черточки - и знаки процента %, разделённые пробелами;
- * число соответствует удачному прыжку, - пропущенной попытке, % заступу.
+ * число соответствует удачному прыжку,- пропущенной попытке, % заступу.
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val a = jumps.split(" ")
+    var res = -1
+    for (i in a) {
+        if (i != "-" && i != "%")
+            try {
+                if (i.toIntOrNull() != null) res = kotlin.math.max(i.toIntOrNull()!!, res) else return -1
+            } catch (e: NumberFormatException) {
+                return -1
+            }
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)
@@ -127,7 +191,17 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var res = -1
+    val char = setOf<String>("%", "+", "-")
+    val a = jumps.split(" ")
+    for (i in a.indices) {
+        if (a[i] !in char)
+            if (a[i].toIntOrNull() != null && a[i + 1] == "+") res =
+                kotlin.math.max(res, a[i].toInt())
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +212,23 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var s = 0
+    val signs = listOf<String>("+", "-")
+    val a = expression.split(" ")
+    if (a[0].toIntOrNull() != null) {
+        if (a.size == 1) s += a[0].toIntOrNull()!!
+        else
+            for (i in 1 until a.size) {
+                if ((a[i - 1] in signs && a[i] !in signs) || (a[i - 1] !in signs && a[i] in signs)) {
+                    if (a[i - 1].toIntOrNull() != null) {
+                        if (signs.indexOf(a[i]) == 0) s += a[i - 1].toIntOrNull()!! else s -= a[i - 1].toIntOrNull()!!
+                    }
+                } else throw IllegalArgumentException()
+            }
+    } else throw IllegalArgumentException()
+    return s
+}
 
 /**
  * Сложная (6 баллов)
@@ -149,7 +239,15 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val a = str.split(" ")
+    var ind = 0
+    for (i in 1 until a.size) {
+        if (a[i - 1].equals(a[i], ignoreCase = true)) return ind
+        ind += 1 + a[i - 1].length
+    }
+    return -1
+}
 
 /**
  * Сложная (6 баллов)
@@ -162,7 +260,24 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val a = description.split("; ")
+    var maxprice = 0.0
+    var nexp = ""
+    for (i in a.indices) {
+        val para = a[i].split(" ")
+        if (para.size % 2 != 0) return ""
+        var n = para[1].toDoubleOrNull()
+        if ((n == null) || (n!! < 0.0)) return ""
+        if ((n != null) && (n!! > 0.0)) {
+            if (n > maxprice) {
+                maxprice = n
+                nexp = para[0]
+            }
+        }
+    }
+    return nexp
+}
 
 /**
  * Сложная (6 баллов)
