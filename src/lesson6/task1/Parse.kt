@@ -97,7 +97,7 @@ fun dateStrToDigit(str: String): String {
     val day = p[0].toIntOrNull()
     val year = p[2].toIntOrNull()
     if ((day == null) || (year == null) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
-    return String.format("%02d.%02d.%02d", day, month, year)
+    return String.format("%02d.%02d.%d", day, month, year)
 
 }
 
@@ -269,8 +269,8 @@ fun mostExpensive(description: String): String {
         if (para.size % 2 != 0) return ""
         var n = para[1].toDoubleOrNull()
         if ((n == null) || (n!! < 0.0)) return ""
-        if ((n != null) && (n!! > 0.0)) {
-            if (n > maxprice) {
+        if ((n != null) && (n!! >= 0.0)) {
+            if (n >= maxprice) {
                 maxprice = n
                 nexp = para[0]
             }
