@@ -4,7 +4,6 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
-import kotlin.math.pow
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -236,7 +235,7 @@ fun convert(n: Int, base: Int): List<Int> {
     var res = mutableListOf<Int>()
     if (n == 0) res.add(n)
     while (nn > 0) {
-        res.add( nn % base)
+        res.add(nn % base)
         nn /= base
     }
     res.reverse()
@@ -257,7 +256,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val k = convert(n, base)
     val alf = "abcdefghijklmnopqrstuvwxyz"
-    var m = buildString {for (i in k.indices) if (k[i] < 10) append(k[i].toString()) else append(alf[k[i] - 10])}
+    var m = buildString { for (i in k.indices) if (k[i] < 10) append(k[i].toString()) else append(alf[k[i] - 10]) }
     return m
 }
 
@@ -310,44 +309,34 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var m = mutableListOf<Int>()
+    var m = mutableListOf<String>()
     var k = n
-    var x = ""
-    if (n >= 1000) {
-        x += "M".repeat(k / 1000)
-    } else k = n
-    k %= 1000
-    if (k / 100 == 9) x += "CM"
-    else if (k / 100 == 5) x += "D"
-    else if (k / 100 == 4) x += "CD"
-    else if ((k < 500) && (k > 100) && (k / 100 != 4)) {
-        x += "C".repeat(k / 100)
-    } else if ((k > 500) && (k < 1000) && (k / 100 != 9)) {
-        x += "D" + "C".repeat((k - 500)/ 100)
-    } else k = n
-    k %= 100
-    if (k / 10 == 10) x += "C"
-    else if (k / 10 == 9) x += "XC"
-    else if (k / 10 == 4) x += "XL"
-    else if (k / 10 == 5) x += "L"
-    if (k / 10 == 1) x += "X"
-    else if ((k < 50) && (k > 10) && (k / 10 != 4)) {
-        x += "X".repeat(k / 10)
-    } else if ((k > 50) && (k < 100) && (k / 10 != 9)) {
-        x += "L" + "X".repeat((k - 50) / 10)
-    } else k = n
-    k %= 10
-    if (k / 10 == 1) x += "X"
-    if (k == 9) x += "IX"
-    if (k == 4) x += "IV"
-    if (k == 5) x += "V"
-    if ((k < 5) && (k >= 1) && (k != 4)) {
-        x += "I".repeat(k)
-    } else if ((k > 5) && (k < 10) && (k != 9)) {
-        x += "V" + "I".repeat(k - 5)
-    } else k = n
-    return x
-
+    var x = 0
+    while (k > 0) {
+        x += 1
+        val j = when (x) {
+            1 -> listOf("I", "V", "X")
+            2 -> listOf("X", "L", "C")
+            3 -> listOf("C", "D", "M")
+            else -> listOf("M")
+        }
+        val f = k % 10
+        k /= 10
+        if (x >= 4) {
+            m.add(0, j[0].repeat(f))
+        } else if (f in 1..3) {
+            m.add(0, j[0].repeat(f))
+        } else if (f in 4..5) {
+            m.add(0, j[0].repeat(f - 5) + j[1])
+        } else if (f in 6..8) {
+            m.add(0, j[1] + j[0].repeat(f - 5))
+        } else if (f == 9) {
+            m.add(0, j[0].repeat(10 - f) + j[2])
+        } else {
+            m.add(0, "")
+        }
+    }
+    return m.joinToString(separator = "")
 }
 
 
