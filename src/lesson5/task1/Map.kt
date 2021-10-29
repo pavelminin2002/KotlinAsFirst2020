@@ -2,9 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -193,20 +190,15 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *
  * Например:
  *   findCheapestStuff(
- *     mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+ *     ma
+ *     pOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
  *     "печенье"
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var reskind: String? = null
-    var min: Double? = null
-    for ((a, b) in stuff) {
-        if ((b.first == kind) && (min == null || min > b.second)) {
-            reskind = a
-            min = b.second
-        }
-    }
-    return reskind
+    val j = stuff.filter { it.value.first == kind }
+    j.minByOrNull { it.value.second }?.key
+    return j.minByOrNull { it.value.second }?.key
 }
 
 /**
@@ -233,11 +225,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    val k = mutableMapOf<String, Int>()
-    for (i in list) {
-        if (i in k) k[i] = k[i]!! + 1
-        else k[i] = 1
-    }
+    val k = list.groupingBy { it }.eachCount()
     return k.filter { it.value > 1 }
 }
 
@@ -310,15 +298,10 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    if (list.isNotEmpty()) {
-        val m = list.map { abs(it - number) }
-        for (i in list.indices) {
-            if ((m[i] in list) && (i != list.indexOf(m[i])) && (list[i] + list[list.indexOf(m[i])] == number))
-                return Pair(
-                    min(i, list.indexOf(m[i])),
-                    max(i, list.indexOf(m[i]))
-                )
-        }
+    val ind = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        if (list[i] in ind) return Pair(ind.getOrDefault(list[i], -1), i)
+        ind[number - list[i]] = i
     }
     return Pair(-1, -1)
 }
@@ -344,25 +327,4 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val res = mutableSetOf<String>()
-    val m = mutableListOf<Pair<String, Int>>()
-    for ((k, v) in treasures) {
-        m.add(Pair(k, v.second))
-    }
-    m.sortByDescending { it.second }
-    var s = 0
-    for (i in 1..m.size - 1) {
-        if (s <= capacity) {
-            s += treasures[m[i].first]!!.first
-            if (s <= capacity) res.add(m[i].first)
-        } else if (s + treasures[m[i].first]!!.first - treasures[m[i - 1].first]!!.first <= capacity) {
-            s += treasures[m[i].first]!!.first - treasures[m[i - 1].first]!!.first
-            if (s <= capacity) {
-                res.remove(m[i - 1].first)
-                res.add(m[i].first)
-            }
-        }
-    }
-    return res
-}
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()

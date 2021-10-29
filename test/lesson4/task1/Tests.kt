@@ -221,7 +221,7 @@ class Tests {
     @Test
     @Tag("5")
     fun roman() {
-        assertEquals("MCMLXXVIII", roman(1978))
+       assertEquals("MCMLXXVIII", roman(1978))
         assertEquals("I", roman(1))
         assertEquals("MMM", roman(3000))
         assertEquals("DCXCIV", roman(694))

@@ -309,7 +309,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var m = mutableListOf<String>()
+    val m = mutableListOf<String>()
     var k = n
     var x = 0
     while (k > 0) {
@@ -327,7 +327,7 @@ fun roman(n: Int): String {
         } else if (f in 1..3) {
             m.add(0, j[0].repeat(f))
         } else if (f in 4..5) {
-            m.add(0, j[0].repeat(f - 5) + j[1])
+            m.add(0, j[0].repeat(5 - f) + j[1])
         } else if (f in 6..8) {
             m.add(0, j[1] + j[0].repeat(f - 5))
         } else if (f == 9) {

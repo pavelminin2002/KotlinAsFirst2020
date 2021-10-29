@@ -79,7 +79,7 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val p = str.split(" ")
     if (p.size != 3) return ""
-    val months = listOf<String>(
+    val months = listOf(
         "января",
         "февраля",
         "марта",
@@ -114,7 +114,7 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val p = digital.split(".")
     if (p.size != 3) return ""
-    val months = listOf<String>(
+    val months = listOf(
         "января",
         "февраля",
         "марта",
@@ -129,7 +129,7 @@ fun dateDigitToStr(digital: String): String {
         "декабря"
     )
     var monthstr = ""
-    var month = p[1].toIntOrNull()
+    val month = p[1].toIntOrNull()
     if (month != null) {
         if (month in 1..12) monthstr = months[month - 1]
         else return ""
@@ -172,7 +172,7 @@ fun bestLongJump(jumps: String): Int {
     for (i in a) {
         if (i != "-" && i != "%")
             try {
-                if (i.toIntOrNull() != null) res = kotlin.math.max(i.toIntOrNull()!!, res) else return -1
+                i.toIntOrNull()?.let { res = maxOf(it, res) } ?: return -1
             } catch (e: NumberFormatException) {
                 return -1
             }
@@ -214,19 +214,19 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     var s = 0
-    val signs = listOf<String>("+", "-")
+    var sign = 1
     val a = expression.split(" ")
-    if (a[0].toIntOrNull() != null) {
-        if (a.size == 1) s += a[0].toIntOrNull()!!
-        else
-            for (i in 1 until a.size) {
-                if ((a[i - 1] in signs && a[i] !in signs) || (a[i - 1] !in signs && a[i] in signs)) {
-                    if (a[i - 1].toIntOrNull() != null) {
-                        if (signs.indexOf(a[i]) == 0) s += a[i - 1].toIntOrNull()!! else s -= a[i - 1].toIntOrNull()!!
-                    }
-                } else throw IllegalArgumentException()
-            }
-    } else throw IllegalArgumentException()
+    if ((a[0].toIntOrNull() == null) || (a[0] == "") || (a[0] == "+") || (a[0] == "-")) throw IllegalArgumentException()
+    for (i in a.indices) {
+        if (i % 2 == 0) {
+            require(a[i].all { it in '0'..'9' })
+            s += a[i].toInt() * sign
+        } else {
+            if (a[i] == "+") sign = 1
+            else if (a[i] == "-") sign = -1
+            else throw IllegalArgumentException()
+        }
+    }
     return s
 }
 
@@ -267,16 +267,16 @@ fun mostExpensive(description: String): String {
     for (i in a.indices) {
         val para = a[i].split(" ")
         if (para.size % 2 != 0) return ""
-        var n = para[1].toDoubleOrNull()
+        val n = para[1].toDoubleOrNull()
         if ((n == null) || (n!! < 0.0)) return ""
-        if ((n != null) && (n!! >= 0.0)) {
+        if (n!! >= 0.0) {
             if (n >= maxprice) {
                 maxprice = n
                 nexp = para[0]
             }
         }
     }
-    return nexp
+    return if (maxprice == 0.0) "Any good with price 0.0" else nexp
 }
 
 /**
