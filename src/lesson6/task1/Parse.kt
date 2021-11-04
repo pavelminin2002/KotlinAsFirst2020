@@ -94,9 +94,9 @@ fun dateStrToDigit(str: String): String {
         "декабря"
     )
     val month = if (months.indexOf(p[1]) != -1) months.indexOf(p[1]) + 1 else return ""
-    val day = p[0].toIntOrNull()
-    val year = p[2].toIntOrNull()
-    if ((day == null) || (year == null) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
+    val day = p[0].toInt() ?: return ""
+    val year = p[2].toInt() ?: return ""
+    if ((day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
     return String.format("%02d.%02d.%d", day, month, year)
 
 }
@@ -111,34 +111,7 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String {
-    val p = digital.split(".")
-    if (p.size != 3) return ""
-    val months = listOf(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
-    var monthstr = ""
-    val month = p[1].toIntOrNull()
-    if (month != null) {
-        if (month in 1..12) monthstr = months[month - 1]
-        else return ""
-    } else return ""
-    val day = p[0].toIntOrNull()
-    val year = p[2].toIntOrNull()
-    if ((day == null) || (year == null) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
-    return "$day $monthstr $year"
-}
+fun dateDigitToStr(digital: String): String = TODO()
 
 /**
  * Средняя (4 балла)
@@ -260,24 +233,7 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String {
-    val a = description.split("; ")
-    var maxprice = 0.0
-    var nexp = ""
-    for (i in a.indices) {
-        val para = a[i].split(" ")
-        if (para.size % 2 != 0) return ""
-        val n = para[1].toDoubleOrNull()
-        if ((n == null) || (n!! < 0.0)) return ""
-        if (n!! >= 0.0) {
-            if (n >= maxprice) {
-                maxprice = n
-                nexp = para[0]
-            }
-        }
-    }
-    return if (maxprice == 0.0) "Any good with price 0.0" else nexp
-}
+fun mostExpensive(description: String): String = TODO()
 
 /**
  * Сложная (6 баллов)

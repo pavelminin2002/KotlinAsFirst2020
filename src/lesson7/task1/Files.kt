@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
 import java.util.*
 
@@ -64,17 +65,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    for (string in File(inputName).readLines()) {
-        if (string.isNotEmpty()) {
-            val k = string[0].toString()
-            if (k != "_") writer.write(string)
-        } else {
-            writer.newLine()
-            writer.newLine()
-        }
-    }
-    writer.close()
+    TODO()
 }
 
 /**
