@@ -82,7 +82,10 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        val dist = center.distance(other.center) - (radius + other.radius)
+        return if (dist <= 0.0) return 0.0 else dist
+    }
 
     /**
      * Тривиальная (1 балл)
@@ -109,7 +112,21 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    require(points.size >= 2)
+    var maxseg = Segment(points[0], points[1])
+    var maxlen = points[0].distance(points[1])
+    for (i in 0..points.size - 2) {
+        for (j in i + 1 until points.size) {
+            if (points[i].distance(points[j]) >= maxlen) {
+                maxlen = points[i].distance(points[j])
+                maxseg = Segment(points[i], points[j])
+            }
+        }
+    }
+    return maxseg
+}
+
 
 /**
  * Простая (2 балла)
@@ -117,7 +134,11 @@ fun diameter(vararg points: Point): Segment = TODO()
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle {
+    val center = Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2)
+    val radius = diameter.begin.distance(diameter.end) / 2
+    return Circle(center, radius)
+}
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -170,7 +191,11 @@ fun lineByPoints(a: Point, b: Point): Line = TODO()
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val angle = if (a.x == b.x) PI / 2
+    else kotlin.math.abs((kotlin.math.atan((a.y - b.y) / (a.x - b.x)) + PI) % PI)
+    return Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), ((angle + PI / 2) % PI))
+}
 
 /**
  * Средняя (3 балла)
