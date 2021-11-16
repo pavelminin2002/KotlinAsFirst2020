@@ -22,7 +22,10 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        val col = "abcdefgh"
+        return if (inside()) col[column - 1] + "$row" else ""
+    }
 }
 
 /**
@@ -32,7 +35,15 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    require(notation.length == 2)
+    val col = "abcdefgh"
+    val column = notation[0]
+    val row = notation[1]
+    require(column in col && row in '1'..'8')
+    return Square(col.indexOf(column) + 1, row.toString().toInt())
+
+}
 
 /**
  * Простая (2 балла)
@@ -140,7 +151,12 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+fun kingMoveNumber(start: Square, end: Square): Int {
+    require(start.inside() && end.inside())
+    val col = kotlin.math.abs(start.column - end.column)
+    val row = kotlin.math.abs(start.row - end.row)
+    return kotlin.math.max(col, row)
+}
 
 /**
  * Сложная (5 баллов)
@@ -156,7 +172,20 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    val res = mutableListOf(start)
+    if (start.column == end.column && end.row == start.row) return listOf(start)
+    else {
+        var square = start
+        while (square != end){
+            val col = if (end.column - square.column > 0) 1 else -1
+            val ro = if (end.row - square.row > 0) 1 else -1
+            square = Square(square.column + col, square.row + ro)
+            res.add(square)
+        }
+    }
+    return res
+}
 
 /**
  * Сложная (6 баллов)

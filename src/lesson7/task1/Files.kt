@@ -2,7 +2,6 @@
 
 package lesson7.task1
 
-import lesson3.task1.digitNumber
 import java.io.File
 import java.util.*
 
@@ -94,18 +93,16 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val sogl = setOf("ж", "ч", "ш", "щ", "Ж", "Ч", "Ш", "Щ")
+    val sogl = setOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     val gl = mapOf('ы' to "и", 'я' to "а", 'ю' to "у", 'Ы' to "И", 'Я' to "А", 'Ю' to "У")
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
-        val k = line[0].toString()
-        writer.write(k)
-        var s = ""
-        for (letter in 1 until line.length) {
-            val let = line[letter].toChar()
-            val letprev = line[letter - 1].toString()
-            if (letprev in sogl && gl.contains(let)) s += gl.getOrDefault(let, "")
-            else s += line[letter].toString()
+        writer.write(line[0].toString())
+        val s = buildString {
+            for (letter in 1 until line.length) {
+                if (line[letter - 1] in sogl && gl.contains(line[letter])) append(gl.getOrDefault(line[letter], ""))
+                else append(line[letter].toString())
+            }
         }
         writer.write(s)
         writer.newLine()
@@ -227,18 +224,19 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     val newdict = mutableMapOf<Char, String>()
     for ((key, value) in dictionary) newdict[key.lowercaseChar()] = value.lowercase(Locale.getDefault())
     for (line in File(inputName).readLines()) {
-        var s = ""
-        for (let in 0 until line.length) {
-            val k = line[let].toChar().lowercaseChar()
-            if (k in newdict) {
-                if (line[let].isUpperCase()) {
-                    val j = newdict.getOrDefault(k, "")
-                    for (i in 0 until j.length) {
-                        if (i == 0) s += j[i].uppercaseChar()
-                        else s += j[i]
-                    }
-                } else s += newdict.getOrDefault(k, "")
-            } else s += line[let]
+        val s = buildString {
+            for (i in line.indices) {
+                val k = line[i].lowercaseChar()
+                if (k in newdict) {
+                    if (line[i].isUpperCase()) {
+                        val j = newdict.getOrDefault(k, "")
+                        for (k in j.indices) {
+                            if (k == 0) append(j[i].uppercaseChar())
+                            else append(j[i])
+                        }
+                    } else append(newdict.getOrDefault(k, ""))
+                } else append(line[i])
+            }
         }
         writer.write(s)
         writer.newLine()

@@ -76,26 +76,27 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+val months = listOf(
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря"
+)
+
 fun dateStrToDigit(str: String): String {
     val p = str.split(" ")
     if (p.size != 3) return ""
-    val months = listOf(
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря"
-    )
     val month = if (months.indexOf(p[1]) != -1) months.indexOf(p[1]) + 1 else return ""
-    val day = p[0].toInt() ?: return ""
-    val year = p[2].toInt() ?: return ""
+    val day = p[0].toIntOrNull() ?: return ""
+    val year = p[2].toIntOrNull() ?: return ""
     if ((day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
     return String.format("%02d.%02d.%d", day, month, year)
 
@@ -111,7 +112,15 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val date = digital.split(".")
+    if (date.size != 3) return ""
+    val day = date[0].toIntOrNull() ?: return ""
+    val month = date[1].toIntOrNull() ?: return ""
+    val year = date[2].toIntOrNull() ?: return ""
+    if ((month !in 1..12) || (day < 1) || (year < 0) || (day > daysInMonth(month, year))) return ""
+    return "$day ${months[month - 1]} $year"
+}
 
 /**
  * Средняя (4 балла)
@@ -235,14 +244,24 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val a = description.split("; ")
-    var maxprice = 0.0
+    var maxprice = -1.0
     var nexp = ""
     for (i in a.indices) {
         if (a[i].matches(Regex("""\W+\s\d+\S\d+"""))) {
             val para = a[i].split(" ")
             val n = para[1].toDouble()
             if (n < 0.0) return ""
-            if (n!! >= 0.0) {
+            if (n >= 0.0) {
+                if (n >= maxprice) {
+                    maxprice = n
+                    nexp = para[0]
+                }
+            }
+        } else if (a[i].matches(Regex("""\W+\s\d+"""))) {
+            val para = a[i].split(" ")
+            val n = para[1].toDouble()
+            if (n < 0.0) return ""
+            if (n >= 0.0) {
                 if (n >= maxprice) {
                     maxprice = n
                     nexp = para[0]
@@ -250,7 +269,7 @@ fun mostExpensive(description: String): String {
             }
         } else return ""
     }
-    return nexp
+    return if (maxprice == 0.0) "Any good with price 0.0" else nexp
 }
 
 /**
