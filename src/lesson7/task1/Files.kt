@@ -231,9 +231,9 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 if (k in newdict) {
                     if (line[i].isUpperCase()) {
                         val j = newdict.getOrDefault(k, "")
-                        for (k in j.indices) {
-                            if (k == 0) append(j[i].uppercaseChar())
-                            else append(j[i])
+                        for (q in j.indices) {
+                            if (q == 0) append(j[q].uppercaseChar())
+                            else append(j[q])
                         }
                     } else append(newdict.getOrDefault(k, ""))
                 } else append(line[i])
