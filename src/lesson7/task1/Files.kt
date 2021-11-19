@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
 import java.util.*
 
@@ -484,7 +485,71 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
+fun numbers(x: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    var k = x
+    for (i in 0 until digitNumber(x)) {
+        list.add(k % 10)
+        k /= 10
+    }
+    return list.reversed()
+}
+
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    writer.write(" $lhv | $rhv")
+    writer.newLine()
+    val s = numbers(lhv).toMutableList()
+    var d1 = s[0].toString()
+    var x = 1
+    if (s.size > 1) {
+        while (d1.toInt() < rhv) {
+            d1 += s[x].toString()
+            x += 1
+        }
+    }
+    var y = 1
+    var d = 0
+    while (d1.toInt() >= rhv * y) {
+        d = rhv * y
+        y += 1
+    }
+    val chast = lhv / rhv
+    writer.write("-$d" + " ".repeat(lhv.toString().length- d.toString().length + 3) + "$chast")
+    writer.newLine()
+    writer.write("-".repeat(d.toString().length + 1))
+    var probel = d.toString().length + 1
+    writer.newLine()
+    for (i in 0 until digitNumber(d1.toInt())) s.removeFirst()
+    for (i in 0 until numbers(chast).size - 1) {
+        var b = (d1.toInt() - d).toString()
+        b += s[0].toString()
+        d1 = b
+        probel += 1
+        writer.write(" ".repeat(probel - b.length) + b)
+        writer.newLine()
+        if (b.toInt() < rhv) {
+            writer.write(" ".repeat(probel - 2) + "-0")
+            writer.newLine()
+            writer.write(" ".repeat(probel - 2) + "--")
+            d = 0
+        } else {
+            var u = 1
+            var t = 0
+            while (b.toInt() >= rhv * u) {
+                t = rhv * u
+                u += 1
+            }
+            d = t
+            writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
+            writer.newLine()
+            writer.write(" ".repeat(probel - t.toString().length - 1) + "-".repeat(t.toString().length + 1))
+        }
+        s -= s[0]
+        writer.newLine()
+    }
+    val l = lhv % rhv
+    writer.write(" ".repeat(probel - l.toString().length) + "$l")
+    writer.close()
 }
 
