@@ -531,7 +531,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         if (b.toInt() < rhv) {
             writer.write(" ".repeat(probel - 2) + "-0")
             writer.newLine()
-            writer.write(" ".repeat(probel - 2) + "-".repeat(b.length))
+            writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
             d = 0
         } else {
             var u = 1

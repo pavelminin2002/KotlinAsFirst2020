@@ -243,33 +243,20 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
+    var mostexp = -1.0
+    var mostexpname = ""
     val a = description.split("; ")
-    var maxprice = -1.0
-    var nexp = ""
-    for (i in a.indices) {
-        if (a[i].matches(Regex("""\W+\s\d+\S\d+"""))) {
-            val para = a[i].split(" ")
-            val n = para[1].toDouble()
-            if (n < 0.0) return ""
-            if (n >= 0.0) {
-                if (n >= maxprice) {
-                    maxprice = n
-                    nexp = para[0]
-                }
-            }
-        } else if (a[i].matches(Regex("""\W+\s\d+"""))) {
-            val para = a[i].split(" ")
-            val n = para[1].toDouble()
-            if (n < 0.0) return ""
-            if (n >= 0.0) {
-                if (n >= maxprice) {
-                    maxprice = n
-                    nexp = para[0]
-                }
-            }
-        } else return ""
+    for (i in a) {
+        val parts = i.split(' ')
+        if (parts.size != 2) return ""
+        val n = parts[1].toDoubleOrNull() ?: return ""
+        if (n < 0.0) return ""
+        if (mostexp < n) {
+            mostexp = n
+            mostexpname = parts[0]
+        }
     }
-    return if (maxprice == 0.0) "Any good with price 0.0" else nexp
+    return if (mostexp == 0.0) "Any good with price 0.0" else mostexpname
 }
 
 /**
