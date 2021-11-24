@@ -96,19 +96,21 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 fun sibilants(inputName: String, outputName: String) {
     val sogl = setOf('ж', 'ч', 'ш', 'щ', 'Ж', 'Ч', 'Ш', 'Щ')
     val gl = mapOf('ы' to "и", 'я' to "а", 'ю' to "у", 'Ы' to "И", 'Я' to "А", 'Ю' to "У")
-    val writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        writer.write(line[0].toString())
-        val s = buildString {
-            for (letter in 1 until line.length) {
-                if (line[letter - 1] in sogl && gl.contains(line[letter])) append(gl.getOrDefault(line[letter], ""))
-                else append(line[letter].toString())
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            it.write(line[0].toString())
+            val s = buildString {
+                for (letter in 1 until line.length) {
+                    if (line[letter - 1] in sogl && gl.contains(line[letter]))
+                        append(gl.getOrDefault(line[letter], ""))
+                    else append(line[letter].toString())
+                }
             }
+            it.write(s)
+            it.newLine()
         }
-        writer.write(s)
-        writer.newLine()
     }
-    writer.close()
+
 }
 
 /**
@@ -485,15 +487,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
-fun numbers(x: Int): List<Int> {
-    val list = mutableListOf<Int>()
-    var k = x
-    for (i in 0 until digitNumber(x)) {
-        list.add(k % 10)
-        k /= 10
-    }
-    return list.reversed()
-}
+fun numbers(x: Int) = "$x".toList().map { it.digitToInt() }
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
@@ -509,11 +503,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
     }
     var y = 1
-    var d = 0
-    while (d1.toInt() >= rhv * y) {
-        d = rhv * y
-        y += 1
-    }
+    var d = d1.toInt() - (d1.toInt() % rhv)
     val chast = lhv / rhv
     writer.write("-$d" + " ".repeat(lhv.toString().length- d.toString().length + 3) + "$chast")
     writer.newLine()
@@ -534,12 +524,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
             d = 0
         } else {
-            var u = 1
-            var t = 0
-            while (b.toInt() >= rhv * u) {
-                t = rhv * u
-                u += 1
-            }
+            var t = b.toInt() - (b.toInt() % rhv)
             d = t
             writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
             writer.newLine()

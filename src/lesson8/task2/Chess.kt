@@ -22,10 +22,7 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String {
-        val col = "abcdefgh"
-        return if (inside()) col[column - 1] + "$row" else ""
-    }
+    fun notation(): String = if (!inside()) "" else 'a' + column - 1 + "$row"
 }
 
 /**
@@ -175,14 +172,12 @@ fun kingMoveNumber(start: Square, end: Square): Int {
 fun kingTrajectory(start: Square, end: Square): List<Square> {
     val res = mutableListOf(start)
     if (start.column == end.column && end.row == start.row) return listOf(start)
-    else {
-        var square = start
-        while (square != end){
-            val col = if (end.column - square.column > 0) 1 else -1
-            val ro = if (end.row - square.row > 0) 1 else -1
-            square = Square(square.column + col, square.row + ro)
-            res.add(square)
-        }
+    var square = start
+    while (square != end) {
+        val col = if (end.column - square.column > 0) 1 else -1
+        val ro = if (end.row - square.row > 0) 1 else -1
+        square = Square(square.column + col, square.row + ro)
+        res.add(square)
     }
     return res
 }

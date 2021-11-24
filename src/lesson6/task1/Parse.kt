@@ -179,8 +179,8 @@ fun bestHighJump(jumps: String): Int {
     val a = jumps.split(" ")
     for (i in a.indices) {
         if (a[i] !in char)
-            if (a[i].toIntOrNull() != null && a[i + 1] == "+") res =
-                kotlin.math.max(res, a[i].toInt())
+            if (a[i].toIntOrNull() != null && a[i + 1] == "+")
+                res = kotlin.math.max(res, a[i].toInt())
     }
     return res
 }
@@ -198,7 +198,7 @@ fun plusMinus(expression: String): Int {
     var s = 0
     var sign = 1
     val a = expression.split(" ")
-    if ((a[0].toIntOrNull() == null) || (a[0] == "") || (a[0] == "+") || (a[0] == "-")) throw IllegalArgumentException()
+    if (a[0].matches(Regex("""\D+"""))) throw IllegalArgumentException()
     for (i in a.indices) {
         if (i % 2 == 0) {
             require(a[i].all { it in '0'..'9' })
@@ -256,7 +256,7 @@ fun mostExpensive(description: String): String {
             mostexpname = parts[0]
         }
     }
-    return if (mostexp == 0.0) "Any good with price 0.0" else mostexpname
+    return mostexpname
 }
 
 /**
