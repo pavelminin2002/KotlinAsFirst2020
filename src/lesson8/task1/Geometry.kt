@@ -106,6 +106,8 @@ data class Segment(val begin: Point, val end: Point) {
         begin.hashCode() + end.hashCode()
 }
 
+fun rotate(a: Point, b: Point, c: Point): Double = ((b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x))
+
 /**
  * Средняя (3 балла)
  *
@@ -193,7 +195,7 @@ fun lineByPoints(a: Point, b: Point): Line = TODO()
  */
 fun bisectorByPoints(a: Point, b: Point): Line {
     val angle = if (a.x == b.x) PI / 2
-    else kotlin.math.abs((kotlin.math.atan((a.y - b.y) / (a.x - b.x)) + PI) % PI)
+    else kotlin.math.abs((kotlin.math.atan((a.y - b.y) / (a.x - b.x))))
     return Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), ((angle + PI / 2) % PI))
 }
 
