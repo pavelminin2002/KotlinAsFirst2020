@@ -487,15 +487,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
-fun numbers(x: Int): List<Int> {
-    val list = mutableListOf<Int>()
-    var k = x
-    for (i in 0 until digitNumber(x)) {
-        list.add(k % 10)
-        k /= 10
-    }
-    return list.reversed()
-}
+fun numbers(x: Int) = "$x".toList().map { it.digitToInt() }
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
@@ -510,7 +502,12 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             x += 1
         }
     }
-    var d = d1.toInt() - (d1.toInt() % rhv)
+    var y = 1
+    var d = 0
+    while (d1.toInt() >= rhv * y) {
+        d = rhv * y
+        y += 1
+    }
     val chast = lhv / rhv
     writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 3) + "$chast")
     writer.newLine()
@@ -531,7 +528,12 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
             d = 0
         } else {
-            val t = b.toInt() - (b.toInt() % rhv)
+            var u = 1
+            var t = 0
+            while (b.toInt() >= rhv * u) {
+                t = rhv * u
+                u += 1
+            }
             d = t
             writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
             writer.newLine()
