@@ -502,10 +502,9 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             x += 1
         }
     }
-    var y = 1
     var d = d1.toInt() - (d1.toInt() % rhv)
     val chast = lhv / rhv
-    writer.write("-$d" + " ".repeat(lhv.toString().length- d.toString().length + 3) + "$chast")
+    writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 3) + "$chast")
     writer.newLine()
     writer.write("-".repeat(d.toString().length + 1))
     var probel = d.toString().length + 1
@@ -524,7 +523,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
             d = 0
         } else {
-            var t = b.toInt() - (b.toInt() % rhv)
+            val t = b.toInt() - (b.toInt() % rhv)
             d = t
             writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
             writer.newLine()
@@ -535,6 +534,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     }
     val l = lhv % rhv
     writer.write(" ".repeat(probel - l.toString().length) + "$l")
+    writer.newLine()
     writer.close()
 }
 
