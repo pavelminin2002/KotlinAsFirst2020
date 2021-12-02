@@ -521,8 +521,6 @@ fun numbers(x: Int) = "$x".toList().map { it.digitToInt() }
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     try {
         val writer = File(outputName).bufferedWriter()
-        writer.write(" $lhv | $rhv")
-        writer.newLine()
         val s = numbers(lhv).toMutableList()
         var d1 = s[0].toString()
         var x = 1
@@ -534,7 +532,10 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         var d = d1.toInt() - d1.toInt() % rhv
         val chast = lhv / rhv
-        writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 3) + "$chast")
+        var p = if (d1.toInt() == lhv && d != 0) 0 else 1
+        writer.write(" ".repeat(p) + lhv + " | " + rhv)
+        writer.newLine()
+        writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
         writer.newLine()
         writer.write("-".repeat(d1.length + 1))
         var probel = d.toString().length + 1
