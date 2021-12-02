@@ -516,7 +516,15 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
  */
-fun numbers(x: Int) = "$x".toList().map { it.digitToInt() }
+fun numbers(x: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    var k = x
+    for (i in 0 until digitNumber(x)) {
+        list.add(k % 10)
+        k /= 10
+    }
+    return list.reversed()
+}
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     val writer = File(outputName).bufferedWriter()
@@ -538,7 +546,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         y += 1
     }
     val chast = lhv / rhv
-    writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 3) + "$chast")
+    writer.write("-$d" + " ".repeat(lhv.toString().length- d.toString().length + 3) + "$chast")
     writer.newLine()
     writer.write("-".repeat(d.toString().length + 1))
     var probel = d.toString().length + 1
@@ -573,7 +581,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     }
     val l = lhv % rhv
     writer.write(" ".repeat(probel - l.toString().length) + "$l")
-    writer.newLine()
     writer.close()
 }
 
