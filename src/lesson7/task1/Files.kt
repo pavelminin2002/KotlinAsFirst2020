@@ -525,7 +525,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var d1 = s[0].toString()
         var x = 1
         if (s.size > 1) {
-            while (d1.toInt() < rhv) {
+            while (d1.toInt() < rhv && d1.toInt() != lhv) {
                 d1 += s[x].toString()
                 x += 1
             }
