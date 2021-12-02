@@ -532,45 +532,42 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 x += 1
             }
         }
-        var y = 1
-        var d = 0
-        while (d1.toInt() >= rhv * y) {
-            d = rhv * y
-            y += 1
-        }
+        var d = d1.toInt() - d1.toInt() % rhv
         val chast = lhv / rhv
         writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 3) + "$chast")
         writer.newLine()
-        writer.write("-".repeat(d.toString().length + 1))
+        writer.write("-".repeat(d1.length + 1))
         var probel = d.toString().length + 1
         writer.newLine()
-        for (i in 0 until digitNumber(d1.toInt())) s.removeFirst()
-        for (i in 0 until numbers(chast).size - 1) {
-            var b = (d1.toInt() - d).toString()
-            b += s[0].toString()
-            d1 = b
-            probel += 1
-            writer.write(" ".repeat(probel - b.length) + b)
-            writer.newLine()
-            if (b.toInt() < rhv) {
-                writer.write(" ".repeat(probel - 2) + "-0")
+        if (lhv > rhv) {
+            for (i in 0 until digitNumber(d1.toInt())) s.removeFirst()
+            for (i in 0 until numbers(chast).size - 1) {
+                var b = (d1.toInt() - d).toString()
+                b += s[0].toString()
+                d1 = b
+                probel += 1
+                writer.write(" ".repeat(probel - b.length) + b)
                 writer.newLine()
-                writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
-                d = 0
-            } else {
-                var u = 1
-                var t = 0
-                while (b.toInt() >= rhv * u) {
-                    t = rhv * u
-                    u += 1
+                if (b.toInt() < rhv) {
+                    writer.write(" ".repeat(probel - 2) + "-0")
+                    writer.newLine()
+                    writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
+                    d = 0
+                } else {
+                    var u = 1
+                    var t = 0
+                    while (b.toInt() >= rhv * u) {
+                        t = rhv * u
+                        u += 1
+                    }
+                    d = t
+                    writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
+                    writer.newLine()
+                    writer.write(" ".repeat(probel - t.toString().length - 1) + "-".repeat(t.toString().length + 1))
                 }
-                d = t
-                writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
+                s -= s[0]
                 writer.newLine()
-                writer.write(" ".repeat(probel - t.toString().length - 1) + "-".repeat(t.toString().length + 1))
             }
-            s -= s[0]
-            writer.newLine()
         }
         val l = lhv % rhv
         writer.write(" ".repeat(probel - l.toString().length) + "$l")
