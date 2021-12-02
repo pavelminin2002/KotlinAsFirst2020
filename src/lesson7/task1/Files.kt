@@ -162,7 +162,36 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val res = mutableListOf<List<String>>()
+    var maxl = 0
+    val linelens = mutableListOf<Int>()
+    for (line in File(inputName).readLines()) {
+        val str = line.trim().split(Regex("""\s+"""))
+        var strlen = 0
+        for (i in str.indices) strlen += str[i].length
+        if (strlen != 0) strlen += str.size - 1
+        linelens.add(strlen)
+        maxl = kotlin.math.max(maxl, strlen)
+        if (str.isEmpty()) res.add(listOf("")) else res.add(str)
+    }
+    File(outputName).bufferedWriter().use {
+        for (i in res.indices) {
+            if (res[i].size == 1) {
+                it.write(res[i][0])
+                it.newLine()
+            } else {
+                val kolvoprob = maxl - linelens[i] / res[i].size - 1
+                var ostprob = (maxl - linelens[i]) % (res[i].size - 1)
+                for (j in 0 until res[i].size - 1) {
+                    val l = if (ostprob > 0) 1 else 0
+                    it.write(res[i][j] + " ".repeat(kolvoprob + 1 + l))
+                    ostprob -= 1
+                }
+                it.write(res[i].last())
+                it.newLine()
+            }
+        }
+    }
 }
 
 /**
@@ -223,28 +252,28 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
     val newdict = mutableMapOf<Char, String>()
     for ((key, value) in dictionary) newdict[key.lowercaseChar()] = value.lowercase(Locale.getDefault())
-    for (line in File(inputName).readLines()) {
-        val s = buildString {
-            for (i in line.indices) {
-                val k = line[i].lowercaseChar()
-                if (k in newdict) {
-                    if (line[i].isUpperCase()) {
-                        val j = newdict.getOrDefault(k, "")
-                        for (q in j.indices) {
-                            if (q == 0) append(j[q].uppercaseChar())
-                            else append(j[q])
-                        }
-                    } else append(newdict.getOrDefault(k, ""))
-                } else append(line[i])
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) {
+            val s = buildString {
+                for (i in line.indices) {
+                    val k = line[i].lowercaseChar()
+                    if (k in newdict) {
+                        if (line[i].isUpperCase()) {
+                            val j = newdict.getOrDefault(k, "")
+                            for (q in j.indices) {
+                                if (q == 0) append(j[q].uppercaseChar())
+                                else append(j[q])
+                            }
+                        } else append(newdict.getOrDefault(k, ""))
+                    } else append(line[i])
+                }
             }
+            it.write(s)
+            it.newLine()
         }
-        writer.write(s)
-        writer.newLine()
     }
-    writer.close()
 }
 
 /**

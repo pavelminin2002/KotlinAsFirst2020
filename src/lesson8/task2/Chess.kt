@@ -2,6 +2,9 @@
 
 package lesson8.task2
 
+import lesson8.task3.Graph
+
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -34,12 +37,10 @@ data class Square(val column: Int, val row: Int) {
  */
 fun square(notation: String): Square {
     require(notation.length == 2)
-    val col = "abcdefgh"
     val column = notation[0]
     val row = notation[1]
-    require(column in col && row in '1'..'8')
-    return Square(col.indexOf(column) + 1, row.toString().toInt())
-
+    require(column in 'a'..'h' && row in '1'..'8')
+    return Square(column - 'a' + 1, row.toString().toInt())
 }
 
 /**
@@ -205,7 +206,33 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+
+
+/**
+не забудь еще спросить про геометри
+ */
+fun createKnightGraph(start: Square, end: Square): Graph {
+    val g = Graph()
+    val hod = mutableListOf(
+        start.notation(), Square(start.column + 2, start.row + 1).notation(),
+        Square(start.column - 2, start.row + 1).notation(),
+        Square(start.column + 2, start.row - 1).notation(),
+        Square(start.column - 2, start.row - 1).notation(),
+        Square(start.column + 1, start.row - 2).notation(),
+        Square(start.column - 1, start.row - 2).notation(),
+        Square(start.column + 1, start.row + 2).notation(),
+        Square(start.column - 1, start.row + 2).notation()
+    )
+    for (i in hod.indices) if (hod[i] != "") g.addVertex(hod[i])
+    for (i in 1 until hod.size) if (hod[i] != "") g.connect(hod[0], hod[i])
+    val hody = hod
+    hody.remove(hody[0])
+    return g
+}
+
+fun knightMoveNumber(start: Square, end: Square): Int =
+    createKnightGraph(start, end).bfs(start.notation(), end.notation())
+
 
 /**
  * Очень сложная (10 баллов)
