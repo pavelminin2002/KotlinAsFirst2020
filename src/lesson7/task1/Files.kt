@@ -532,7 +532,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         var d = d1.toInt() - d1.toInt() % rhv
         val chast = lhv / rhv
-        var p = if (d1.toInt() == lhv && d != 0) 0 else 1
+        val p = if (d1.toInt() == lhv && d.toString().length != s.size) 0 else 1
         writer.write(" ".repeat(p) + lhv + " | " + rhv)
         writer.newLine()
         writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
