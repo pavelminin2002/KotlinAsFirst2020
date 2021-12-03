@@ -182,12 +182,14 @@ fun alignFileByWidth(inputName: String, outputName: String) {
             } else {
                 val kolvoprob = (maxl - linelens[i]) / (res[i].size - 1)
                 var ostprob = (maxl - linelens[i]) % (res[i].size - 1)
-                for (j in 0 until res[i].size - 1) {
-                    val l = if (ostprob > 0) 1 else 0
-                    it.write(res[i][j] + " ".repeat(kolvoprob + 1 + l))
-                    ostprob -= 1
+                val stroch = buildString {
+                    for (j in 0 until res[i].size) {
+                        val l = if (ostprob > 0) 1 else 0
+                        append(res[i][j] + " ".repeat(kolvoprob + 1 + l))
+                        ostprob -= 1
+                    }
                 }
-                it.write(res[i].last())
+                it.write(stroch.trim())
                 it.newLine()
             }
         }
