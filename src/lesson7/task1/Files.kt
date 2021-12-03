@@ -541,7 +541,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         if (g < 0) g = 0
         writer.write(
             " ".repeat(g) + "-$d" +
-                    " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast"
+                    " ".repeat(lhv.toString().length - d.toString().length - g + 2 + p) + "$chast"
         )
         writer.newLine()
         writer.write("-".repeat(d1.length + 1))
