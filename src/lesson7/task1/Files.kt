@@ -519,59 +519,63 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun numbers(x: Int) = "$x".toList().map { it.digitToInt() }
 
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    val s = numbers(lhv).toMutableList()
-    var d1 = s[0].toString()
-    var x = 1
-    if (s.size > 1) {
-        while (d1.toInt() < rhv && d1.toInt() != lhv) {
-            d1 += s[x].toString()
-            x += 1
-        }
-    }
-    var d = d1.toInt() - d1.toInt() % rhv
-    val chast = lhv / rhv
-    val p = if (d1.toInt() == lhv && d.toString().length != s.size) 0 else 1
-    writer.write(" ".repeat(p) + lhv + " | " + rhv)
-    writer.newLine()
-    writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
-    writer.newLine()
-    writer.write("-".repeat(d1.length + 1))
-    var probel = d.toString().length + 1
-    writer.newLine()
-    if (lhv > rhv) {
-        for (i in 0 until digitNumber(d1.toInt())) s.removeFirst()
-        for (i in 0 until numbers(chast).size - 1) {
-            var b = (d1.toInt() - d).toString()
-            b += s[0].toString()
-            d1 = b
-            probel += 1
-            writer.write(" ".repeat(probel - b.length) + b)
-            writer.newLine()
-            if (b.toInt() < rhv) {
-                writer.write(" ".repeat(probel - 2) + "-0")
-                writer.newLine()
-                writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
-                d = 0
-            } else {
-                var u = 1
-                var t = 0
-                while (b.toInt() >= rhv * u) {
-                    t = rhv * u
-                    u += 1
-                }
-                d = t
-                writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
-                writer.newLine()
-                writer.write(" ".repeat(probel - t.toString().length - 1) + "-".repeat(t.toString().length + 1))
+    try {
+        val writer = File(outputName).bufferedWriter()
+        val s = numbers(lhv).toMutableList()
+        var d1 = s[0].toString()
+        var x = 1
+        if (s.size > 1) {
+            while (d1.toInt() < rhv && d1.toInt() != lhv) {
+                d1 += s[x].toString()
+                x += 1
             }
-            s -= s[0]
-            writer.newLine()
         }
+        var d = d1.toInt() - d1.toInt() % rhv
+        val chast = lhv / rhv
+        val p = if (d1.toInt() == lhv && d.toString().length != s.size) 0 else 1
+        writer.write(" ".repeat(p) + lhv + " | " + rhv)
+        writer.newLine()
+        writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
+        writer.newLine()
+        writer.write("-".repeat(d1.length + 1))
+        var probel = d.toString().length + 1
+        writer.newLine()
+        if (lhv > rhv) {
+            for (i in 0 until digitNumber(d1.toInt())) s.removeFirst()
+            for (i in 0 until numbers(chast).size - 1) {
+                var b = (d1.toInt() - d).toString()
+                b += s[0].toString()
+                d1 = b
+                probel += 1
+                writer.write(" ".repeat(probel - b.length) + b)
+                writer.newLine()
+                if (b.toInt() < rhv) {
+                    writer.write(" ".repeat(probel - 2) + "-0")
+                    writer.newLine()
+                    writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
+                    d = 0
+                } else {
+                    var u = 1
+                    var t = 0
+                    while (b.toInt() >= rhv * u) {
+                        t = rhv * u
+                        u += 1
+                    }
+                    d = t
+                    writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
+                    writer.newLine()
+                    writer.write(" ".repeat(probel - t.toString().length - 1) + "-".repeat(t.toString().length + 1))
+                }
+                s -= s[0]
+                writer.newLine()
+            }
+        }
+        val l = lhv % rhv
+        writer.write(" ".repeat(probel - l.toString().length) + "$l")
+        writer.newLine()
+        writer.close()
+    } catch (e: IllegalArgumentException) {
+        throw IllegalArgumentException("$lhv $rhv")
     }
-    val l = lhv % rhv
-    writer.write(" ".repeat(probel - l.toString().length) + "$l")
-    writer.newLine()
-    writer.close()
 }
 
