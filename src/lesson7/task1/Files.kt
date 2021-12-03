@@ -544,7 +544,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                     " ".repeat(lhv.toString().length - d.toString().length - g + 2 + p) + "$chast"
         )
         writer.newLine()
-        writer.write("-".repeat(d1.length + 1))
+        writer.write("-".repeat(d1.length + p))
         val l = lhv % rhv
         var probel = d.toString().length + 1
         writer.newLine()
