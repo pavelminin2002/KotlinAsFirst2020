@@ -538,6 +538,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
         writer.newLine()
         writer.write("-".repeat(d1.length + 1))
+        val l = lhv % rhv
         var probel = d.toString().length + 1
         writer.newLine()
         if (lhv > rhv) {
@@ -569,10 +570,12 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 s -= s[0]
                 writer.newLine()
             }
+            writer.write(" ".repeat(probel - l.toString().length) + "$l")
+            writer.newLine()
+        } else {
+            writer.write(" ".repeat(d1.length + 1 - l.toString().length) + "$l")
+            writer.newLine()
         }
-        val l = lhv % rhv
-        writer.write(" ".repeat(probel - l.toString().length) + "$l")
-        writer.newLine()
         writer.close()
     } catch (e: IllegalArgumentException) {
         throw IllegalArgumentException("$lhv $rhv")
