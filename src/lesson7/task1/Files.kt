@@ -535,7 +535,14 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         val p = if ((d1.toInt() == lhv && d.toString().length != s.size) || d.toString().length < d1.length) 0 else 1
         writer.write(" ".repeat(p) + lhv + " | " + rhv)
         writer.newLine()
-        writer.write("-$d" + " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast")
+        var g = if (d.toString().length == lhv.toString().length) 0
+        else d1.length - d.toString().length - 1
+        if (g > 0) g -= p
+        if (g < 0) g = 0
+        writer.write(
+            " ".repeat(g) + "-$d" +
+                    " ".repeat(lhv.toString().length - d.toString().length + 2 + p) + "$chast"
+        )
         writer.newLine()
         writer.write("-".repeat(d1.length + 1))
         val l = lhv % rhv
@@ -573,7 +580,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             writer.write(" ".repeat(probel - l.toString().length) + "$l")
             writer.newLine()
         } else {
-            writer.write(" ".repeat(d1.length + 1 - l.toString().length) + "$l")
+            writer.write(" ".repeat(d1.length + p - l.toString().length) + "$l")
             writer.newLine()
         }
         writer.close()
