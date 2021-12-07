@@ -565,12 +565,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                     writer.write(" ".repeat(probel - b.length) + "-".repeat(b.length))
                     d = 0
                 } else {
-                    var u = 1
-                    var t = 0
-                    while (b.toInt() >= rhv * u) {
-                        t = rhv * u
-                        u += 1
-                    }
+                    val t = b.toInt() - (b.toInt() % rhv)
                     d = t
                     writer.write(" ".repeat(probel - t.toString().length - 1) + "-$t")
                     writer.newLine()

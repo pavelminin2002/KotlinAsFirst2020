@@ -211,27 +211,54 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
 /**
 не забудь еще спросить про геометри
  */
+fun genLegalMoves(x: Int, y: Int): MutableList<String> {
+    val newmoves = mutableListOf<String>()
+    val moveOffsets = mutableListOf(
+        Pair(-1, -2),
+        Pair(-1, 2),
+        Pair(-2, -1),
+        Pair(-2, 1),
+        Pair(1, -2),
+        Pair(1, 2),
+        Pair(2, -1),
+        Pair(2, 1)
+    )
+    for (i in moveOffsets.indices) {
+        val newx = x + moveOffsets[i].first
+        val newy = y + moveOffsets[i].second
+        if (Square(newy, newx).inside()) newmoves.add(Square(newy, newx).notation())
+    }
+    return newmoves
+}
+
 fun createKnightGraph(start: Square, end: Square): Graph {
     val g = Graph()
-    val hod = mutableListOf(
-        start.notation(), Square(start.column + 2, start.row + 1).notation(),
-        Square(start.column - 2, start.row + 1).notation(),
-        Square(start.column + 2, start.row - 1).notation(),
-        Square(start.column - 2, start.row - 1).notation(),
-        Square(start.column + 1, start.row - 2).notation(),
-        Square(start.column - 1, start.row - 2).notation(),
-        Square(start.column + 1, start.row + 2).notation(),
-        Square(start.column - 1, start.row + 2).notation()
-    )
-    for (i in hod.indices) if (hod[i] != "") g.addVertex(hod[i])
-    for (i in 1 until hod.size) if (hod[i] != "") g.connect(hod[0], hod[i])
-    val hody = hod
-    hody.remove(hody[0])
+    val hod = mutableListOf(start.notation())
+    g.addVertex(hod[0])
+    val hod1 = genLegalMoves(start.column, start.row)
+    for (i in hod1.indices) {
+        hod.add(hod1[i])
+        g.addVertex(hod1[1])
+        g.connect(hod[0], hod1[1])
+    }
+    var x = 0
+    while (end.notation() !in hod) {
+        val kk = genLegalMoves(square(hod[x]).column, square(hod[x]).row)
+        for (i in kk.indices) {
+            g.addVertex(kk[i])
+            g.connect(hod[x], kk[i])
+            hod.add(kk[i])
+        }
+        x += 1
+    }
     return g
 }
 
-fun knightMoveNumber(start: Square, end: Square): Int =
-    createKnightGraph(start, end).bfs(start.notation(), end.notation())
+
+fun knightMoveNumber(start: Square, end: Square): Int {
+    if (start.notation() == "" || end.notation() == "") throw IllegalArgumentException()
+    return if (start == end) 0 else return createKnightGraph(start, end).bfs(start.notation(), end.notation())
+}
 
 
 /**

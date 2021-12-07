@@ -116,13 +116,38 @@ fun rotate(a: Point, b: Point, c: Point): Double = ((b.x - a.x) * (c.y - b.y) - 
  */
 fun diameter(vararg points: Point): Segment {
     require(points.size >= 2)
-    var maxseg = Segment(points[0], points[1])
-    var maxlen = points[0].distance(points[1])
-    for (i in 0..points.size - 2) {
-        for (j in i + 1 until points.size) {
-            if (points[i].distance(points[j]) >= maxlen) {
-                maxlen = points[i].distance(points[j])
-                maxseg = Segment(points[i], points[j])
+    val n = points.size
+    val p = mutableListOf<Int>()
+    for (i in 0 until n) p.add(i)
+    for (i in 1 until n){
+        if (points[p[i]].x < points[p[0]].x) {
+            p[i] = p[0]
+            p[0] = p[i]
+        }
+    }
+    val h = mutableListOf<Int>()
+    h.add(p[0])
+    p.remove(p[0])
+    p.add(h[0])
+    var x = 1
+    while (x == 1) {
+        var right = 0
+        for (i in 1 until p.size) {
+            if (rotate(points[h.last()], points[p[right]], points[p[i]]) <0) right = i
+        }
+        if (p[right] == h[0]) x += 1
+        else {
+            h.add(p[right])
+            p.remove(p[right])
+        }
+    }
+    var maxseg = Segment(points[h[0]], points[h[1]])
+    var maxlen = points[h[0]].distance(points[h[1]])
+    for (i in 0..h.size - 2) {
+        for (j in i + 1 until h.size) {
+            if (points[h[i]].distance(points[h[j]]) >= maxlen) {
+                maxlen = points[h[i]].distance(points[h[j]])
+                maxseg = Segment(points[h[i]], points[h[j]])
             }
         }
     }
