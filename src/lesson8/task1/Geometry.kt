@@ -119,7 +119,7 @@ fun diameter(vararg points: Point): Segment {
     val n = points.size
     val p = mutableListOf<Int>()
     for (i in 0 until n) p.add(i)
-    for (i in 1 until n){
+    for (i in 1 until n) {
         if (points[p[i]].x < points[p[0]].x) {
             p[i] = p[0]
             p[0] = p[i]
@@ -133,7 +133,7 @@ fun diameter(vararg points: Point): Segment {
     while (x == 1) {
         var right = 0
         for (i in 1 until p.size) {
-            if (rotate(points[h.last()], points[p[right]], points[p[i]]) <0) right = i
+            if (rotate(points[h.last()], points[p[right]], points[p[i]]) < 0) right = i
         }
         if (p[right] == h[0]) x += 1
         else {
@@ -204,7 +204,10 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    val angle = kotlin.math.abs((kotlin.math.atan((s.begin.y - s.end.y) / (s.begin.x - s.end.x)) + PI) % PI)
+    return Line(s.begin, angle)
+}
 
 /**
  * Средняя (3 балла)
@@ -218,11 +221,9 @@ fun lineByPoints(a: Point, b: Point): Line = TODO()
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line {
-    val angle = if (a.x == b.x) PI / 2
-    else kotlin.math.abs((kotlin.math.atan((a.y - b.y) / (a.x - b.x)) + PI) % PI)
-    return Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), ((angle + PI / 2) % PI))
-}
+fun bisectorByPoints(a: Point, b: Point): Line =
+    Line(Point((a.x + b.x) / 2, (a.y + b.y) / 2), (lineBySegment(Segment(a, b)).angle + PI / 2) % PI)
+
 
 /**
  * Средняя (3 балла)
