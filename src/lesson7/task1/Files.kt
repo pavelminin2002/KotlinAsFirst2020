@@ -162,39 +162,10 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    val res = mutableListOf<List<String>>()
-    var maxl = 0
-    val linelens = mutableListOf<Int>()
-    for (line in File(inputName).readLines()) {
-        val str = line.trim().split(Regex("""\s+"""))
-        var strlen = 0
-        for (i in str.indices) strlen += str[i].length
-        if (strlen != 0) strlen += str.size - 1
-        linelens.add(strlen)
-        maxl = kotlin.math.max(maxl, strlen)
-        if (str.isEmpty()) res.add(listOf("")) else res.add(str)
-    }
-    File(outputName).bufferedWriter().use {
-        for (i in res.indices) {
-            if (res[i].size == 1) {
-                it.write(res[i][0])
-                it.newLine()
-            } else {
-                val kolvoprob = (maxl - linelens[i]) / (res[i].size - 1)
-                var ostprob = (maxl - linelens[i]) % (res[i].size - 1)
-                val stroch = buildString {
-                    for (j in 0 until res[i].size) {
-                        val l = if (ostprob > 0) 1 else 0
-                        append(res[i][j] + " ".repeat(kolvoprob + 1 + l))
-                        ostprob -= 1
-                    }
-                }
-                it.write(stroch.trim())
-                it.newLine()
-            }
-        }
-    }
+    TODO()
 }
+
+
 
 /**
  * Средняя (14 баллов)
