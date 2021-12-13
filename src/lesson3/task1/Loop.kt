@@ -3,7 +3,6 @@
 package lesson3.task1
 
 import kotlin.math.min
-import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.math.max
 
@@ -292,7 +291,7 @@ fun squareSequenceDigit(n: Int): Int {
             break
         }
     }
-    return RightFigure(s, n, number)
+    return rightFigure(s, n, number)
 }
 
 /**
@@ -318,10 +317,10 @@ fun fibSequenceDigit(n: Int): Int {
             break
         }
     }
-    return RightFigure(s, n, number)
+    return rightFigure(s, n, number)
 }
 
-private fun RightFigure(s: Int, n: Int, number: Int): Int {
+private fun rightFigure(s: Int, n: Int, number: Int): Int {
     var s1 = s
     var number1 = number
     while (s1 != n) {
